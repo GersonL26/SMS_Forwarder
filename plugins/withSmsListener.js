@@ -52,12 +52,12 @@ class SmsListenerModule(private val reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun startListening() {
-        // El BroadcastReceiver ya está registrado en el manifest; no se necesita nada aquí.
+        // El BroadcastReceiver esta registrado en el manifest; no se necesita nada aqui.
     }
 
     @ReactMethod
     fun stopListening() {
-        // La escucha es pasiva vía manifest; el JS deja de procesar eventos.
+        // La escucha es pasiva via manifest; el JS deja de procesar eventos.
     }
 
     fun emitSmsReceived(remitente: String, cuerpo: String) {
@@ -79,7 +79,7 @@ class SmsListenerModule(private val reactContext: ReactApplicationContext) :
 }
 `;
 
-// ─── Kotlin: ReactPackage que registra el módulo ─────────────────────────────
+// ─── Kotlin: ReactPackage que registra el modulo ─────────────────────────────
 const SMS_LISTENER_PACKAGE_KT = `package com.smsforwarder.app
 
 import com.facebook.react.ReactPackage
@@ -98,7 +98,7 @@ class SmsListenerPackage : ReactPackage {
 
 // ─── Plugin principal ─────────────────────────────────────────────────────────
 const withSmsListener = (config) => {
-    // 1. Agregar el BroadcastReceiver al AndroidManifest.xml
+    // 1. Agregar BroadcastReceiver al AndroidManifest.xml
     config = withAndroidManifest(config, (modConfig) => {
         const application = modConfig.modResults.manifest.application[0];
         if (!application.receiver) application.receiver = [];
@@ -120,8 +120,7 @@ const withSmsListener = (config) => {
                         action: [
                             {
                                 $: {
-                                    'android:name':
-                                        'android.provider.Telephony.SMS_RECEIVED',
+                                    'android:name': 'android.provider.Telephony.SMS_RECEIVED',
                                 },
                             },
                         ],
@@ -133,7 +132,7 @@ const withSmsListener = (config) => {
         return modConfig;
     });
 
-    // 2. Escribir archivos Kotlin y registrar el paquete en MainApplication.kt
+    // 2. Escribir archivos Kotlin al directorio nativo del proyecto
     config = withDangerousMod(config, [
         'android',
         (modConfig) => {
@@ -142,29 +141,34 @@ const withSmsListener = (config) => {
                 'app/src/main/java/com/smsforwarder/app'
             );
             fs.mkdirSync(pkgDir, { recursive: true });
-
             fs.writeFileSync(path.join(pkgDir, 'SmsReceiver.kt'), SMS_RECEIVER_KT);
             fs.writeFileSync(path.join(pkgDir, 'SmsListenerModule.kt'), SMS_LISTENER_MODULE_KT);
             fs.writeFileSync(path.join(pkgDir, 'SmsListenerPackage.kt'), SMS_LISTENER_PACKAGE_KT);
+            return modConfig;
+        },
+    ]);
 
-            // 3. Registrar SmsListenerPackage en MainApplication.kt de forma segura
+    // 3. Registrar SmsListenerPackage en MainApplication.kt
     config = withMainApplication(config, (modConfig) => {
         let content = modConfig.modResults.contents;
-        if (!content.includes('SmsListenerPackage')) {
-            // Patrón RN 0.71+ con PackageList
+        if (content.includes('SmsListenerPackage')) return modConfig;
+
+        // Patron RN 0.71+ con PackageList
+        const patternApply = 'PackageList(this).packages.apply {';
+        if (content.includes(patternApply)) {
             content = content.replace(
-                'PackageList(this).packages.apply {',
-                'PackageList(this).packages.apply {\n      add(SmsListenerPackage())'
+                patternApply,
+                patternApply + '\n      add(SmsListenerPackage())'
             );
-            // Patrón alternativo
-            if (!content.includes('SmsListenerPackage')) {
-                content = content.replace(
-                    '// add(MyReactNativePackage())',
-                    'add(SmsListenerPackage())\n          // add(MyReactNativePackage())'
-                );
-            }
-            modConfig.modResults.contents = content;
+        } else {
+            // Patron alternativo con comentario placeholder
+            content = content.replace(
+                '// add(MyReactNativePackage())',
+                'add(SmsListenerPackage())\n          // add(MyReactNativePackage())'
+            );
         }
+
+        modConfig.modResults.contents = content;
         return modConfig;
     });
 
