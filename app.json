@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SMS_Forwarder",
-    "slug": "SMS_Forwarder",
+    "slug": "sms-forwarder",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -31,6 +31,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "93b32858-af43-492e-9bce-de69c676e06d"
+      }
+    },
+    "owner": "gersonl504s-organization",
+    "plugins": [
+      "./plugins/withSmsListener"
+    ]
   }
 }
