@@ -1,11 +1,11 @@
 import { EvaluarYReenviarSms } from '../../application/EvaluarYReenviarSms';
-import { EvaluadorDeReglas } from '../../domain/servicios/EvaluadorDeReglas';
-import { EstadoMensaje } from '../../domain/entidades/MensajeSms';
-import { CampoObjetivo } from '../../domain/entidades/ReglaDeReenvio';
-import { IRepositorioReglas } from '../../domain/puertos/IRepositorioReglas';
-import { IRepositorioMensajes } from '../../domain/puertos/IRepositorioMensajes';
-import { IRepositorioConfigTelegram } from '../../domain/puertos/IRepositorioConfigTelegram';
-import { IEnviadorTelegram } from '../../domain/puertos/IEnviadorTelegram';
+import { EvaluadorDeReglas } from '../../domain/services/EvaluadorDeReglas';
+import { EstadoMensaje } from '../../domain/entities/MensajeSms';
+import { CampoObjetivo } from '../../domain/entities/ReglaDeReenvio';
+import { IRepositorioReglas } from '../../domain/ports/IRepositorioReglas';
+import { IRepositorioMensajes } from '../../domain/ports/IRepositorioMensajes';
+import { IRepositorioConfigTelegram } from '../../domain/ports/IRepositorioConfigTelegram';
+import { IEnviadorTelegram } from '../../domain/ports/IEnviadorTelegram';
 
 describe('EvaluarYReenviarSms', () => {
   let casoDeUso: EvaluarYReenviarSms;

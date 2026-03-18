@@ -1,4 +1,4 @@
-import { IReceptorSms } from '../domain/puertos/IReceptorSms';
+import { IReceptorSms } from '../domain/ports/IReceptorSms';
 import { EvaluarYReenviarSms } from './EvaluarYReenviarSms';
 
 export class ControlarServicioSms {

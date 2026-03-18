@@ -1,6 +1,6 @@
 import { ConfigurarTelegram } from '../../application/ConfigurarTelegram';
-import { IRepositorioConfigTelegram } from '../../domain/puertos/IRepositorioConfigTelegram';
-import { IEnviadorTelegram } from '../../domain/puertos/IEnviadorTelegram';
+import { IRepositorioConfigTelegram } from '../../domain/ports/IRepositorioConfigTelegram';
+import { IEnviadorTelegram } from '../../domain/ports/IEnviadorTelegram';
 
 describe('ConfigurarTelegram', () => {
   let casoDeUso: ConfigurarTelegram;

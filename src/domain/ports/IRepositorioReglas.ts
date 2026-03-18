@@ -1,4 +1,4 @@
-import { ReglaDeReenvio } from '../entidades/ReglaDeReenvio';
+import { ReglaDeReenvio } from '../entities/ReglaDeReenvio';
 
 export interface IRepositorioReglas {
   guardar(regla: ReglaDeReenvio): Promise<void>;

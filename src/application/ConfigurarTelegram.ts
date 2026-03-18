@@ -1,6 +1,6 @@
-import { ConfiguracionTelegram } from '../domain/entidades/ConfiguracionTelegram';
-import { IRepositorioConfigTelegram } from '../domain/puertos/IRepositorioConfigTelegram';
-import { IEnviadorTelegram } from '../domain/puertos/IEnviadorTelegram';
+import { ConfiguracionTelegram } from '../domain/entities/ConfiguracionTelegram';
+import { IRepositorioConfigTelegram } from '../domain/ports/IRepositorioConfigTelegram';
+import { IEnviadorTelegram } from '../domain/ports/IEnviadorTelegram';
 
 export class ConfigurarTelegram {
   constructor(

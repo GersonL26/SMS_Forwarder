@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MensajeSms } from '../../domain/entidades/MensajeSms';
-import { IRepositorioMensajes } from '../../domain/puertos/IRepositorioMensajes';
+import { MensajeSms } from '../../domain/entities/MensajeSms';
+import { IRepositorioMensajes } from '../../domain/ports/IRepositorioMensajes';
 
 const CLAVE = '@sms_forwarder/mensajes';
 

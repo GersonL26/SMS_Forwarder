@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1773804297991" clover="3.2.0">
-  <project timestamp="1773804297991" name="All files">
+<coverage generated="1773842311194" clover="3.2.0">
+  <project timestamp="1773842311194" name="All files">
     <metrics statements="48" coveredstatements="48" conditionals="10" coveredconditionals="10" methods="26" coveredmethods="25" elements="84" coveredelements="83" complexity="0" loc="48" ncloc="48" packages="1" files="5" classes="5"/>
-    <file name="ConfigurarTelegram.ts" path="C:\Users\wwwge\Documents\GitHub\SMS_Forwarder\src\application\ConfigurarTelegram.ts">
+    <file name="ConfigurarTelegram.ts" path="C:\Users\glopez\Documents\GitHub\SMS_Forwarder\src\application\ConfigurarTelegram.ts">
       <metrics statements="7" coveredstatements="7" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
       <line num="15" count="1" type="stmt"/>
       <line num="16" count="1" type="stmt"/>
@@ -12,14 +12,14 @@
       <line num="27" count="1" type="stmt"/>
       <line num="30" count="2" type="stmt"/>
     </file>
-    <file name="ControlarServicioSms.ts" path="C:\Users\wwwge\Documents\GitHub\SMS_Forwarder\src\application\ControlarServicioSms.ts">
+    <file name="ControlarServicioSms.ts" path="C:\Users\glopez\Documents\GitHub\SMS_Forwarder\src\application\ControlarServicioSms.ts">
       <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="5"/>
       <line num="11" count="2" type="stmt"/>
       <line num="12" count="1" type="stmt"/>
       <line num="19" count="1" type="stmt"/>
       <line num="23" count="2" type="stmt"/>
     </file>
-    <file name="EvaluarYReenviarSms.ts" path="C:\Users\wwwge\Documents\GitHub\SMS_Forwarder\src\application\EvaluarYReenviarSms.ts">
+    <file name="EvaluarYReenviarSms.ts" path="C:\Users\glopez\Documents\GitHub\SMS_Forwarder\src\application\EvaluarYReenviarSms.ts">
       <metrics statements="19" coveredstatements="19" conditionals="6" coveredconditionals="6" methods="5" coveredmethods="5"/>
       <line num="18" count="7" type="stmt"/>
       <line num="19" count="7" type="stmt"/>
@@ -41,7 +41,7 @@
       <line num="83" count="7" type="stmt"/>
       <line num="87" count="7" type="stmt"/>
     </file>
-    <file name="GestionarReglas.ts" path="C:\Users\wwwge\Documents\GitHub\SMS_Forwarder\src\application\GestionarReglas.ts">
+    <file name="GestionarReglas.ts" path="C:\Users\glopez\Documents\GitHub\SMS_Forwarder\src\application\GestionarReglas.ts">
       <metrics statements="13" coveredstatements="13" conditionals="2" coveredconditionals="2" methods="7" coveredmethods="7"/>
       <line num="12" count="1" type="stmt"/>
       <line num="13" count="1" type="stmt"/>
@@ -57,7 +57,7 @@
       <line num="41" count="2" type="stmt"/>
       <line num="45" count="1" type="stmt"/>
     </file>
-    <file name="ObtenerRegistroDeMensajes.ts" path="C:\Users\wwwge\Documents\GitHub\SMS_Forwarder\src\application\ObtenerRegistroDeMensajes.ts">
+    <file name="ObtenerRegistroDeMensajes.ts" path="C:\Users\glopez\Documents\GitHub\SMS_Forwarder\src\application\ObtenerRegistroDeMensajes.ts">
       <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
       <line num="4" count="1" type="stmt"/>
       <line num="12" count="3" type="stmt"/>

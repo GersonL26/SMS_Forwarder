@@ -1,6 +1,6 @@
 import { GestionarReglas } from '../../application/GestionarReglas';
-import { CampoObjetivo, ReglaDeReenvio } from '../../domain/entidades/ReglaDeReenvio';
-import { IRepositorioReglas } from '../../domain/puertos/IRepositorioReglas';
+import { CampoObjetivo, ReglaDeReenvio } from '../../domain/entities/ReglaDeReenvio';
+import { IRepositorioReglas } from '../../domain/ports/IRepositorioReglas';
 
 describe('GestionarReglas', () => {
   let casoDeUso: GestionarReglas;

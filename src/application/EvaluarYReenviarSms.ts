@@ -1,9 +1,9 @@
-import { EstadoMensaje, MensajeSms } from '../domain/entidades/MensajeSms';
-import { IRepositorioReglas } from '../domain/puertos/IRepositorioReglas';
-import { IRepositorioMensajes } from '../domain/puertos/IRepositorioMensajes';
-import { IRepositorioConfigTelegram } from '../domain/puertos/IRepositorioConfigTelegram';
-import { IEnviadorTelegram } from '../domain/puertos/IEnviadorTelegram';
-import { EvaluadorDeReglas } from '../domain/servicios/EvaluadorDeReglas';
+import { EstadoMensaje, MensajeSms } from '../domain/entities/MensajeSms';
+import { IRepositorioReglas } from '../domain/ports/IRepositorioReglas';
+import { IRepositorioMensajes } from '../domain/ports/IRepositorioMensajes';
+import { IRepositorioConfigTelegram } from '../domain/ports/IRepositorioConfigTelegram';
+import { IEnviadorTelegram } from '../domain/ports/IEnviadorTelegram';
+import { EvaluadorDeReglas } from '../domain/services/EvaluadorDeReglas';
 
 export class EvaluarYReenviarSms {
   constructor(

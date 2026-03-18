@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { ReglaDeReenvio } from '../../domain/entidades/ReglaDeReenvio';
-import { ContenedorDeDependencias } from '../../infrastructure/contenedor/ContenedorDeDependencias';
+import { ReglaDeReenvio } from '../../domain/entities/ReglaDeReenvio';
+import { ContenedorDeDependencias } from '../../infrastructure/container/ContenedorDeDependencias';
 
 export const useReglas = () => {
   const [reglas, setReglas] = useState<ReglaDeReenvio[]>([]);

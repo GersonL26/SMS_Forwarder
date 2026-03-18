@@ -1,4 +1,4 @@
-import { MensajeSms } from '../entidades/MensajeSms';
+import { MensajeSms } from '../entities/MensajeSms';
 
 export interface IRepositorioMensajes {
   guardar(mensaje: MensajeSms): Promise<void>;

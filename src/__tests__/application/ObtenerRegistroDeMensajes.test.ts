@@ -1,6 +1,6 @@
 import { ObtenerRegistroDeMensajes } from '../../application/ObtenerRegistroDeMensajes';
-import { EstadoMensaje, MensajeSms } from '../../domain/entidades/MensajeSms';
-import { IRepositorioMensajes } from '../../domain/puertos/IRepositorioMensajes';
+import { EstadoMensaje, MensajeSms } from '../../domain/entities/MensajeSms';
+import { IRepositorioMensajes } from '../../domain/ports/IRepositorioMensajes';
 
 const crearMensajeDePrueba = (
   id: string,

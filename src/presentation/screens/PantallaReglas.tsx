@@ -10,8 +10,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useReglas } from '../hooks/useReglas';
-import { FormularioRegla } from '../componentes/FormularioRegla';
-import { ReglaDeReenvio, CampoObjetivo } from '../../domain/entidades/ReglaDeReenvio';
+import { FormularioRegla } from '../components/FormularioRegla';
+import { ReglaDeReenvio, CampoObjetivo } from '../../domain/entities/ReglaDeReenvio';
 
 export const PantallaReglas: React.FC = () => {
   const { reglas, cargando, crear, editar, eliminar, alternarEstado } =

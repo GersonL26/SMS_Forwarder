@@ -2,7 +2,7 @@ import { NativeModules, NativeEventEmitter } from 'react-native';
 import {
   IReceptorSms,
   CallbackSms,
-} from '../../domain/puertos/IReceptorSms';
+} from '../../domain/ports/IReceptorSms';
 
 const { SmsListener } = NativeModules;
 

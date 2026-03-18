@@ -1,3 +1,3 @@
-export * from './entidades';
-export * from './puertos';
-export * from './servicios';
+export * from './entities';
+export * from './ports';
+export * from './services';

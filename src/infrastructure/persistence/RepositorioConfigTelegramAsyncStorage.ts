@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ConfiguracionTelegram } from '../../domain/entidades/ConfiguracionTelegram';
-import { IRepositorioConfigTelegram } from '../../domain/puertos/IRepositorioConfigTelegram';
+import { ConfiguracionTelegram } from '../../domain/entities/ConfiguracionTelegram';
+import { IRepositorioConfigTelegram } from '../../domain/ports/IRepositorioConfigTelegram';
 
 const CLAVE = '@sms_forwarder/config_telegram';
 

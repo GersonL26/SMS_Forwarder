@@ -1,4 +1,4 @@
-import { ReglaDeReenvio, CampoObjetivo } from '../entidades/ReglaDeReenvio';
+import { ReglaDeReenvio, CampoObjetivo } from '../entities/ReglaDeReenvio';
 
 export class EvaluadorDeReglas {
   coincideConAlgunaRegla(

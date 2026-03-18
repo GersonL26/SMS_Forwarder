@@ -1,12 +1,12 @@
-import { EvaluadorDeReglas } from '../../domain/servicios/EvaluadorDeReglas';
+import { EvaluadorDeReglas } from '../../domain/services/EvaluadorDeReglas';
 import { EvaluarYReenviarSms } from '../../application/EvaluarYReenviarSms';
 import { GestionarReglas } from '../../application/GestionarReglas';
 import { ConfigurarTelegram } from '../../application/ConfigurarTelegram';
 import { ObtenerRegistroDeMensajes } from '../../application/ObtenerRegistroDeMensajes';
 import { ControlarServicioSms } from '../../application/ControlarServicioSms';
-import { RepositorioMensajesAsyncStorage } from '../persistencia/RepositorioMensajesAsyncStorage';
-import { RepositorioReglasAsyncStorage } from '../persistencia/RepositorioReglasAsyncStorage';
-import { RepositorioConfigTelegramAsyncStorage } from '../persistencia/RepositorioConfigTelegramAsyncStorage';
+import { RepositorioMensajesAsyncStorage } from '../persistence/RepositorioMensajesAsyncStorage';
+import { RepositorioReglasAsyncStorage } from '../persistence/RepositorioReglasAsyncStorage';
+import { RepositorioConfigTelegramAsyncStorage } from '../persistence/RepositorioConfigTelegramAsyncStorage';
 import { EnviadorTelegramApi } from '../telegram/EnviadorTelegramApi';
 import { ReceptorSmsNativo } from '../sms/ReceptorSmsNativo';
 

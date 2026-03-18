@@ -14,7 +14,7 @@ import {
 import {
   ReglaDeReenvio,
   CampoObjetivo,
-} from '../../domain/entidades/ReglaDeReenvio';
+} from '../../domain/entities/ReglaDeReenvio';
 
 interface Props {
   visible: boolean;

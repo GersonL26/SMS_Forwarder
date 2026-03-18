@@ -1,5 +1,5 @@
-import { MensajeSms } from '../domain/entidades/MensajeSms';
-import { IRepositorioMensajes } from '../domain/puertos/IRepositorioMensajes';
+import { MensajeSms } from '../domain/entities/MensajeSms';
+import { IRepositorioMensajes } from '../domain/ports/IRepositorioMensajes';
 
 const LIMITE_MENSAJES = 50;
 

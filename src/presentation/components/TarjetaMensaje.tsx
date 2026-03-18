@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { MensajeSms, EstadoMensaje } from '../../domain/entidades/MensajeSms';
+import { MensajeSms, EstadoMensaje } from '../../domain/entities/MensajeSms';
 
 const ICONOS_ESTADO: Record<EstadoMensaje, string> = {
   [EstadoMensaje.REENVIADO]: '✅',

@@ -1,4 +1,4 @@
-import { ConfiguracionTelegram } from '../entidades/ConfiguracionTelegram';
+import { ConfiguracionTelegram } from '../entities/ConfiguracionTelegram';
 
 export interface IRepositorioConfigTelegram {
   guardar(configuracion: ConfiguracionTelegram): Promise<void>;

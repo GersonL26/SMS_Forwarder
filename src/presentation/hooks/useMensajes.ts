@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { PermissionsAndroid, Platform, Alert } from 'react-native';
-import { MensajeSms } from '../../domain/entidades/MensajeSms';
-import { ContenedorDeDependencias } from '../../infrastructure/contenedor/ContenedorDeDependencias';
+import { MensajeSms } from '../../domain/entities/MensajeSms';
+import { ContenedorDeDependencias } from '../../infrastructure/container/ContenedorDeDependencias';
 
 const solicitarPermisosSms = async (): Promise<boolean> => {
   if (Platform.OS !== 'android') return false;

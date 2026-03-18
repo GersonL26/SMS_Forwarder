@@ -1,5 +1,5 @@
-import { ReglaDeReenvio } from '../domain/entidades/ReglaDeReenvio';
-import { IRepositorioReglas } from '../domain/puertos/IRepositorioReglas';
+import { ReglaDeReenvio } from '../domain/entities/ReglaDeReenvio';
+import { IRepositorioReglas } from '../domain/ports/IRepositorioReglas';
 
 export class GestionarReglas {
   constructor(

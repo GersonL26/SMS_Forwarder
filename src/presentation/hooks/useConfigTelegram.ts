@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { ConfiguracionTelegram } from '../../domain/entidades/ConfiguracionTelegram';
-import { ContenedorDeDependencias } from '../../infrastructure/contenedor/ContenedorDeDependencias';
+import { ConfiguracionTelegram } from '../../domain/entities/ConfiguracionTelegram';
+import { ContenedorDeDependencias } from '../../infrastructure/container/ContenedorDeDependencias';
 
 export const useConfigTelegram = () => {
   const [configuracion, setConfiguracion] =

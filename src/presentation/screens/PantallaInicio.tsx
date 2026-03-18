@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useMensajes } from '../hooks/useMensajes';
-import { IndicadorServicio } from '../componentes/IndicadorServicio';
-import { TarjetaMensaje } from '../componentes/TarjetaMensaje';
-import { MensajeSms, EstadoMensaje } from '../../domain/entidades/MensajeSms';
+import { IndicadorServicio } from '../components/IndicadorServicio';
+import { TarjetaMensaje } from '../components/TarjetaMensaje';
+import { MensajeSms, EstadoMensaje } from '../../domain/entities/MensajeSms';
 
 type FiltroEstado = 'todos' | EstadoMensaje;
 

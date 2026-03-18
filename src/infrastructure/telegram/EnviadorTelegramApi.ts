@@ -1,4 +1,4 @@
-import { IEnviadorTelegram } from '../../domain/puertos/IEnviadorTelegram';
+import { IEnviadorTelegram } from '../../domain/ports/IEnviadorTelegram';
 
 const URL_BASE_TELEGRAM = 'https://api.telegram.org';
 

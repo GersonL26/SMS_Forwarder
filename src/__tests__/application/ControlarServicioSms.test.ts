@@ -1,6 +1,6 @@
 import { ControlarServicioSms } from '../../application/ControlarServicioSms';
 import { EvaluarYReenviarSms } from '../../application/EvaluarYReenviarSms';
-import { IReceptorSms, CallbackSms } from '../../domain/puertos/IReceptorSms';
+import { IReceptorSms, CallbackSms } from '../../domain/ports/IReceptorSms';
 
 describe('ControlarServicioSms', () => {
   let casoDeUso: ControlarServicioSms;

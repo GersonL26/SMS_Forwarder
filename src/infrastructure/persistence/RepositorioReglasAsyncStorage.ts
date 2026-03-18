@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ReglaDeReenvio } from '../../domain/entidades/ReglaDeReenvio';
-import { IRepositorioReglas } from '../../domain/puertos/IRepositorioReglas';
+import { ReglaDeReenvio } from '../../domain/entities/ReglaDeReenvio';
+import { IRepositorioReglas } from '../../domain/ports/IRepositorioReglas';
 
 const CLAVE = '@sms_forwarder/reglas';
 

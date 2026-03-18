@@ -3,9 +3,9 @@ import { Text, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { PantallaInicio } from '../pantallas/PantallaInicio';
-import { PantallaReglas } from '../pantallas/PantallaReglas';
-import { PantallaConfiguracion } from '../pantallas/PantallaConfiguracion';
+import { PantallaInicio } from '../screens/PantallaInicio';
+import { PantallaReglas } from '../screens/PantallaReglas';
+import { PantallaConfiguracion } from '../screens/PantallaConfiguracion';
 
 const Tab = createBottomTabNavigator();
 
