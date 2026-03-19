@@ -1,8 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
-import { PermissionsAndroid, Platform, Alert } from 'react-native';
+import { NativeModules, PermissionsAndroid, Platform, Alert } from 'react-native';
 import { MensajeSms } from '../../domain/entities/MensajeSms';
 import { ContenedorDeDependencias } from '../../infrastructure/container/ContenedorDeDependencias';
-import { ReceptorSmsNativo } from '../../infrastructure/sms/ReceptorSmsNativo';
 
 const solicitarPermisosSms = async (): Promise<boolean> => {
   if (Platform.OS !== 'android') return false;
@@ -33,7 +32,7 @@ export const useMensajes = () => {
   const [cargando, setCargando] = useState(true);
   const [servicioActivo, setServicioActivo] = useState(false);
 
-  const { obtenerRegistroDeMensajes, controlarServicioSms, reintentarMensaje } =
+  const { obtenerRegistroDeMensajes, controlarServicioSms, reintentarMensaje, sincronizadorConfigNativa } =
     ContenedorDeDependencias.obtenerInstancia();
 
   const cargarMensajes = useCallback(async () => {
@@ -45,20 +44,22 @@ export const useMensajes = () => {
 
   useEffect(() => {
     cargarMensajes();
-    // Check persisted native service state and auto-resume if needed
-    const verificarEstado = async () => {
-      const receptor = controlarServicioSms['receptorSms'] as ReceptorSmsNativo;
-      if (receptor.consultarEstadoNativo) {
-        const corriendo = await receptor.consultarEstadoNativo();
-        if (corriendo && !controlarServicioSms.estaActivo()) {
-          controlarServicioSms.iniciar();
-        }
-        setServicioActivo(corriendo);
-      } else {
-        setServicioActivo(controlarServicioSms.estaActivo());
-      }
-    };
-    verificarEstado();
+    // Restaurar estado del ForegroundService persistido en SharedPreferences
+    const { SmsListener } = NativeModules;
+    if (SmsListener?.getEstaEscuchando) {
+      SmsListener.getEstaEscuchando()
+        .then((corriendo: boolean) => {
+          setServicioActivo(corriendo);
+          if (corriendo && !controlarServicioSms.estaActivo()) {
+            controlarServicioSms.iniciar();
+          }
+        })
+        .catch(() => {
+          setServicioActivo(controlarServicioSms.estaActivo());
+        });
+    } else {
+      setServicioActivo(controlarServicioSms.estaActivo());
+    }
   }, [cargarMensajes, controlarServicioSms]);
 
   const alternarServicio = useCallback(async () => {
@@ -74,10 +75,12 @@ export const useMensajes = () => {
         );
         return;
       }
+      // Sincronizar config y reglas al modulo nativo antes de arrancar el servicio
+      await sincronizadorConfigNativa.sincronizar();
       controlarServicioSms.iniciar();
       setServicioActivo(true);
     }
-  }, [servicioActivo, controlarServicioSms]);
+  }, [servicioActivo, controlarServicioSms, sincronizadorConfigNativa]);
 
   const reintentar = useCallback(
     async (mensaje: MensajeSms): Promise<boolean> => {

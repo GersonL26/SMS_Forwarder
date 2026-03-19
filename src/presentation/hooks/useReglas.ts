@@ -6,7 +6,7 @@ export const useReglas = () => {
   const [reglas, setReglas] = useState<ReglaDeReenvio[]>([]);
   const [cargando, setCargando] = useState(true);
 
-  const { gestionarReglas } =
+  const { gestionarReglas, sincronizadorConfigNativa } =
     ContenedorDeDependencias.obtenerInstancia();
 
   const cargarReglas = useCallback(async () => {
@@ -24,32 +24,36 @@ export const useReglas = () => {
     async (datos: Omit<ReglaDeReenvio, 'id'>) => {
       await gestionarReglas.crearRegla(datos);
       await cargarReglas();
+      await sincronizadorConfigNativa.sincronizar();
     },
-    [gestionarReglas, cargarReglas],
+    [gestionarReglas, cargarReglas, sincronizadorConfigNativa],
   );
 
   const editar = useCallback(
     async (regla: ReglaDeReenvio) => {
       await gestionarReglas.editarRegla(regla);
       await cargarReglas();
+      await sincronizadorConfigNativa.sincronizar();
     },
-    [gestionarReglas, cargarReglas],
+    [gestionarReglas, cargarReglas, sincronizadorConfigNativa],
   );
 
   const eliminar = useCallback(
     async (id: string) => {
       await gestionarReglas.eliminarRegla(id);
       await cargarReglas();
+      await sincronizadorConfigNativa.sincronizar();
     },
-    [gestionarReglas, cargarReglas],
+    [gestionarReglas, cargarReglas, sincronizadorConfigNativa],
   );
 
   const alternarEstado = useCallback(
     async (id: string) => {
       await gestionarReglas.alternarEstado(id);
       await cargarReglas();
+      await sincronizadorConfigNativa.sincronizar();
     },
-    [gestionarReglas, cargarReglas],
+    [gestionarReglas, cargarReglas, sincronizadorConfigNativa],
   );
 
   return { reglas, cargando, crear, editar, eliminar, alternarEstado };

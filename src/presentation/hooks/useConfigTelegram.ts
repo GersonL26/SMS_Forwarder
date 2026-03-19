@@ -9,7 +9,7 @@ export const useConfigTelegram = () => {
   const [error, setError] = useState<string | null>(null);
   const [exito, setExito] = useState<string | null>(null);
 
-  const { configurarTelegram } =
+  const { configurarTelegram, sincronizadorConfigNativa } =
     ContenedorDeDependencias.obtenerInstancia();
 
   const cargarConfiguraciones = useCallback(async () => {
@@ -35,6 +35,7 @@ export const useConfigTelegram = () => {
       try {
         await configurarTelegram.guardarConfiguracion(config);
         await cargarConfiguraciones();
+        await sincronizadorConfigNativa.sincronizar();
         setExito('Configuración guardada correctamente');
       } catch {
         setError('Error al guardar configuración');
@@ -50,6 +51,7 @@ export const useConfigTelegram = () => {
       try {
         await configurarTelegram.eliminarConfiguracion(id);
         await cargarConfiguraciones();
+        await sincronizadorConfigNativa.sincronizar();
         setExito('Configuración eliminada');
       } catch {
         setError('Error al eliminar configuración');

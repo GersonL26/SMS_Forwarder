@@ -14,6 +14,7 @@ import { RepositorioAjustesAsyncStorage } from '../persistence/RepositorioAjuste
 import { RepositorioPendientesAsyncStorage } from '../persistence/RepositorioPendientesAsyncStorage';
 import { EnviadorTelegramApi } from '../telegram/EnviadorTelegramApi';
 import { ReceptorSmsNativo } from '../sms/ReceptorSmsNativo';
+import { SincronizadorConfigNativa } from '../sms/SincronizadorConfigNativa';
 import { MonitorDeRedNetInfo } from '../network/MonitorDeRedNetInfo';
 import { EnviadorWebhookHttp } from '../webhook/EnviadorWebhookHttp';
 import { NotificadorExpo } from '../notifications/NotificadorExpo';
@@ -29,6 +30,7 @@ export class ContenedorDeDependencias {
   readonly gestionarAjustes: GestionarAjustes;
   readonly procesarColaPendientes: ProcesarColaPendientes;
   readonly reintentarMensaje: ReintentarMensaje;
+  readonly sincronizadorConfigNativa: SincronizadorConfigNativa;
 
   // @ts-expect-error stored for cleanup reference
   private cancelarMonitoreoRed: (() => void) | null = null;
@@ -90,6 +92,11 @@ export class ContenedorDeDependencias {
     this.controlarServicioSms = new ControlarServicioSms(
       receptorSms,
       this.evaluarYReenviarSms,
+    );
+
+    this.sincronizadorConfigNativa = new SincronizadorConfigNativa(
+      repositorioConfig,
+      repositorioReglas,
     );
 
     this.cancelarMonitoreoRed = monitorDeRed.alRecuperarConexion(() => {

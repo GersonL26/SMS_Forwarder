@@ -41,6 +41,15 @@ export class ReceptorSmsNativo implements IReceptorSms {
   }
 
   async consultarEstadoNativo(): Promise<boolean> {
-    return SmsListener.isServiceRunning();
+    return SmsListener.getEstaEscuchando();
+  }
+
+  actualizarConfiguracion(
+    token: string,
+    chatId: string,
+    reglas: string,
+    todasConfigs: string,
+  ): void {
+    SmsListener.actualizarConfiguracion(token, chatId, reglas, todasConfigs);
   }
 }
