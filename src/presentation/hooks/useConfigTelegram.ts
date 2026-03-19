@@ -3,70 +3,85 @@ import { ConfiguracionTelegram } from '../../domain/entities/ConfiguracionTelegr
 import { ContenedorDeDependencias } from '../../infrastructure/container/ContenedorDeDependencias';
 
 export const useConfigTelegram = () => {
-  const [configuracion, setConfiguracion] =
-    useState<ConfiguracionTelegram | null>(null);
+  const [configuraciones, setConfiguraciones] = useState<ConfiguracionTelegram[]>([]);
   const [cargando, setCargando] = useState(true);
-  const [enviandoPrueba, setEnviandoPrueba] = useState(false);
+  const [enviandoPrueba, setEnviandoPrueba] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [exito, setExito] = useState<string | null>(null);
 
   const { configurarTelegram } =
     ContenedorDeDependencias.obtenerInstancia();
 
-  const cargarConfiguracion = useCallback(async () => {
+  const cargarConfiguraciones = useCallback(async () => {
     setCargando(true);
     try {
-      const config = await configurarTelegram.obtenerConfiguracion();
-      setConfiguracion(config);
+      const configs = await configurarTelegram.obtenerTodas();
+      setConfiguraciones(configs);
     } catch {
-      setError('Error al cargar configuración');
+      setError('Error al cargar configuraciones');
     } finally {
       setCargando(false);
     }
   }, [configurarTelegram]);
 
   useEffect(() => {
-    cargarConfiguracion();
-  }, [cargarConfiguracion]);
+    cargarConfiguraciones();
+  }, [cargarConfiguraciones]);
 
   const guardar = useCallback(
-    async (botToken: string, chatId: string) => {
+    async (config: ConfiguracionTelegram) => {
       setError(null);
       setExito(null);
       try {
-        await configurarTelegram.guardarConfiguracion(botToken, chatId);
-        setConfiguracion({ botToken, chatId });
+        await configurarTelegram.guardarConfiguracion(config);
+        await cargarConfiguraciones();
         setExito('Configuración guardada correctamente');
       } catch {
         setError('Error al guardar configuración');
       }
     },
-    [configurarTelegram],
+    [configurarTelegram, cargarConfiguraciones],
   );
 
-  const enviarPrueba = useCallback(async () => {
+  const eliminar = useCallback(
+    async (id: string) => {
+      setError(null);
+      setExito(null);
+      try {
+        await configurarTelegram.eliminarConfiguracion(id);
+        await cargarConfiguraciones();
+        setExito('Configuración eliminada');
+      } catch {
+        setError('Error al eliminar configuración');
+      }
+    },
+    [configurarTelegram, cargarConfiguraciones],
+  );
+
+  const enviarPrueba = useCallback(async (configId: string) => {
     setError(null);
     setExito(null);
-    setEnviandoPrueba(true);
+    setEnviandoPrueba(configId);
     try {
-      await configurarTelegram.enviarMensajeDePrueba();
+      await configurarTelegram.enviarMensajeDePrueba(configId);
       setExito('Mensaje de prueba enviado correctamente');
     } catch (e) {
       setError(
         e instanceof Error ? e.message : 'Error al enviar prueba',
       );
     } finally {
-      setEnviandoPrueba(false);
+      setEnviandoPrueba(null);
     }
   }, [configurarTelegram]);
 
   return {
-    configuracion,
+    configuraciones,
     cargando,
     enviandoPrueba,
     error,
     exito,
     guardar,
+    eliminar,
     enviarPrueba,
   };
 };

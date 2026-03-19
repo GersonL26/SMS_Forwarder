@@ -3,3 +3,8 @@ export * from './IRepositorioReglas';
 export * from './IRepositorioConfigTelegram';
 export * from './IEnviadorTelegram';
 export * from './IReceptorSms';
+export * from './IRepositorioAjustes';
+export * from './IRepositorioPendientes';
+export * from './IMonitorDeRed';
+export * from './IEnviadorWebhook';
+export * from './INotificador';

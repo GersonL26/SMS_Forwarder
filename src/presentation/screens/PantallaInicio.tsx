@@ -11,7 +11,9 @@ import {
 import { useMensajes } from '../hooks/useMensajes';
 import { IndicadorServicio } from '../components/IndicadorServicio';
 import { TarjetaMensaje } from '../components/TarjetaMensaje';
+import { FondoGradiente } from '../components/FondoGradiente';
 import { MensajeSms, EstadoMensaje } from '../../domain/entities/MensajeSms';
+import { COLORES, BORDES } from '../theme/colores';
 
 type FiltroEstado = 'todos' | EstadoMensaje;
 
@@ -23,7 +25,7 @@ const OPCIONES_FILTRO: { clave: FiltroEstado; etiqueta: string; icono: string }[
 ];
 
 export const PantallaInicio: React.FC = () => {
-  const { mensajes, cargando, servicioActivo, cargarMensajes, alternarServicio } =
+  const { mensajes, cargando, servicioActivo, cargarMensajes, alternarServicio, reintentar } =
     useMensajes();
   const [filtroActivo, setFiltroActivo] = useState<FiltroEstado>('todos');
 
@@ -33,8 +35,10 @@ export const PantallaInicio: React.FC = () => {
   }, [mensajes, filtroActivo]);
 
   const renderizarMensaje = useCallback(
-    ({ item }: { item: MensajeSms }) => <TarjetaMensaje mensaje={item} />,
-    [],
+    ({ item }: { item: MensajeSms }) => (
+      <TarjetaMensaje mensaje={item} onReintentar={reintentar} />
+    ),
+    [reintentar],
   );
 
   const renderizarVacio = () => (
@@ -55,15 +59,17 @@ export const PantallaInicio: React.FC = () => {
 
   if (cargando) {
     return (
-      <View style={estilos.centrado}>
-        <ActivityIndicator size="large" color="#1565C0" />
-        <Text style={estilos.textoCargando}>Cargando mensajes...</Text>
-      </View>
+      <FondoGradiente>
+        <View style={estilos.centrado}>
+          <ActivityIndicator size="large" color="#FFFFFF" />
+          <Text style={estilos.textoCargando}>Cargando mensajes...</Text>
+        </View>
+      </FondoGradiente>
     );
   }
 
   return (
-    <View style={estilos.contenedor}>
+    <FondoGradiente>
       <IndicadorServicio
         activo={servicioActivo}
         onAlternar={alternarServicio}
@@ -102,7 +108,8 @@ export const PantallaInicio: React.FC = () => {
           <RefreshControl
             refreshing={false}
             onRefresh={cargarMensajes}
-            colors={['#1565C0']}
+            colors={[COLORES.primario]}
+            tintColor="#FFFFFF"
           />
         }
         contentContainerStyle={
@@ -110,38 +117,33 @@ export const PantallaInicio: React.FC = () => {
         }
         showsVerticalScrollIndicator={false}
       />
-    </View>
+    </FondoGradiente>
   );
 };
 
 const estilos = StyleSheet.create({
-  contenedor: {
-    flex: 1,
-    backgroundColor: '#EEF2F7',
-  },
   centrado: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#EEF2F7',
   },
   textoCargando: {
     marginTop: 12,
     fontSize: 14,
-    color: '#666',
+    color: COLORES.textoSecundario,
   },
   lista: {
-    paddingVertical: 4,
-    paddingBottom: 16,
+    paddingVertical: 6,
+    paddingBottom: 20,
   },
   listaVacia: {
     flex: 1,
   },
   barraFiltros: {
     flexDirection: 'row',
-    marginHorizontal: 12,
-    marginTop: 8,
-    marginBottom: 4,
+    marginHorizontal: 16,
+    marginTop: 10,
+    marginBottom: 6,
     gap: 6,
   },
   botonFiltro: {
@@ -149,16 +151,16 @@ const estilos = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    paddingVertical: 9,
     paddingHorizontal: 4,
-    borderRadius: 8,
-    backgroundColor: '#FFFFFF',
-    borderWidth: 1.5,
-    borderColor: '#E0E0E0',
+    borderRadius: BORDES.radio.sm,
+    backgroundColor: COLORES.tarjeta,
+    borderWidth: 1,
+    borderColor: COLORES.tarjetaBorde,
   },
   botonFiltroActivo: {
-    backgroundColor: '#1565C0',
-    borderColor: '#1565C0',
+    backgroundColor: COLORES.fondoTerciario,
+    borderColor: COLORES.primario,
   },
   iconoFiltro: {
     fontSize: 12,
@@ -167,10 +169,10 @@ const estilos = StyleSheet.create({
   textoFiltro: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#78909C',
+    color: COLORES.textoSutil,
   },
   textoFiltroActivo: {
-    color: '#FFFFFF',
+    color: COLORES.primario,
   },
   vacio: {
     flex: 1,
@@ -185,12 +187,12 @@ const estilos = StyleSheet.create({
   textoVacio: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#444',
+    color: COLORES.texto,
     textAlign: 'center',
   },
   textoSubtitulo: {
     fontSize: 14,
-    color: '#888',
+    color: COLORES.textoSecundario,
     textAlign: 'center',
     marginTop: 8,
     lineHeight: 20,

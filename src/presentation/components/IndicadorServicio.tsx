@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { COLORES, SOMBRAS, BORDES, GRADIENTES } from '../theme/colores';
 
 interface Props {
   activo: boolean;
@@ -8,38 +10,36 @@ interface Props {
 
 export const IndicadorServicio: React.FC<Props> = ({ activo, onAlternar }) => {
   return (
-    <View
-      style={[
-        estilos.contenedor,
-        { borderLeftColor: activo ? '#4CAF50' : '#F44336' },
-      ]}
-    >
+    <View style={estilos.contenedor}>
       <View style={estilos.indicador}>
-        <Text style={estilos.icono}>{activo ? '🟢' : '🔴'}</Text>
-        <View>
-          <Text style={estilos.titulo}>Servicio de escucha</Text>
+        <View style={[estilos.punto, activo ? estilos.puntoActivo : estilos.puntoInactivo]} />
+        <View style={{ flex: 1 }}>
+          <Text style={estilos.titulo}>Servicio SMS</Text>
           <Text
             style={[
               estilos.estado,
-              { color: activo ? '#4CAF50' : '#F44336' },
+              { color: activo ? COLORES.exito : COLORES.error },
             ]}
           >
-            {activo ? 'Activo — interceptando SMS' : 'Detenido'}
+            {activo ? 'Activo — interceptando' : 'Detenido'}
           </Text>
         </View>
       </View>
 
       <TouchableOpacity
-        style={[
-          estilos.boton,
-          activo ? estilos.botonDetener : estilos.botonIniciar,
-        ]}
         onPress={onAlternar}
-        activeOpacity={0.7}
+        activeOpacity={0.8}
       >
-        <Text style={estilos.textoBoton}>
-          {activo ? '⏹ Detener' : '▶ Iniciar'}
-        </Text>
+        <LinearGradient
+          colors={activo ? [...GRADIENTES.botonError] : [...GRADIENTES.botonExito]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={estilos.boton}
+        >
+          <Text style={estilos.textoBoton}>
+            {activo ? '⏹ Detener' : '▶ Iniciar'}
+          </Text>
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
@@ -50,32 +50,37 @@ const estilos = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    padding: 14,
-    marginHorizontal: 12,
-    marginTop: 12,
-    marginBottom: 4,
-    borderRadius: 12,
-    borderLeftWidth: 4,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.12,
-    shadowRadius: 4,
+    backgroundColor: COLORES.tarjeta,
+    padding: 16,
+    marginHorizontal: 16,
+    marginTop: 14,
+    marginBottom: 6,
+    borderRadius: BORDES.radio.md,
+    borderWidth: 1,
+    borderColor: COLORES.tarjetaBorde,
+    ...SOMBRAS.suave,
   },
   indicador: {
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
   },
-  icono: {
-    fontSize: 20,
-    marginRight: 10,
+  punto: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginRight: 12,
+  },
+  puntoActivo: {
+    backgroundColor: COLORES.exito,
+  },
+  puntoInactivo: {
+    backgroundColor: COLORES.error,
   },
   titulo: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '700',
-    color: '#333',
+    color: COLORES.texto,
   },
   estado: {
     fontSize: 12,
@@ -83,16 +88,10 @@ const estilos = StyleSheet.create({
     marginTop: 2,
   },
   boton: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
     paddingVertical: 10,
-    borderRadius: 8,
+    borderRadius: BORDES.radio.sm,
     marginLeft: 8,
-  },
-  botonIniciar: {
-    backgroundColor: '#4CAF50',
-  },
-  botonDetener: {
-    backgroundColor: '#F44336',
   },
   textoBoton: {
     color: '#FFFFFF',

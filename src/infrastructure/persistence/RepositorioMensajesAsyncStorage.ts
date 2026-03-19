@@ -21,4 +21,13 @@ export class RepositorioMensajesAsyncStorage implements IRepositorioMensajes {
       fechaHora: new Date(registro.fechaHora as string),
     })) as MensajeSms[];
   }
+
+  async actualizar(mensaje: MensajeSms): Promise<void> {
+    const mensajes = await this.obtenerTodos();
+    const indice = mensajes.findIndex((m) => m.id === mensaje.id);
+    if (indice >= 0) {
+      mensajes[indice] = mensaje;
+      await AsyncStorage.setItem(CLAVE, JSON.stringify(mensajes));
+    }
+  }
 }

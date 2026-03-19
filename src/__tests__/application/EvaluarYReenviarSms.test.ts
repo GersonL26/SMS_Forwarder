@@ -6,6 +6,12 @@ import { IRepositorioReglas } from '../../domain/ports/IRepositorioReglas';
 import { IRepositorioMensajes } from '../../domain/ports/IRepositorioMensajes';
 import { IRepositorioConfigTelegram } from '../../domain/ports/IRepositorioConfigTelegram';
 import { IEnviadorTelegram } from '../../domain/ports/IEnviadorTelegram';
+import { IRepositorioAjustes } from '../../domain/ports/IRepositorioAjustes';
+import { IRepositorioPendientes } from '../../domain/ports/IRepositorioPendientes';
+import { IMonitorDeRed } from '../../domain/ports/IMonitorDeRed';
+import { IEnviadorWebhook } from '../../domain/ports/IEnviadorWebhook';
+import { INotificador } from '../../domain/ports/INotificador';
+import { AJUSTES_POR_DEFECTO } from '../../domain/entities/Ajustes';
 
 describe('EvaluarYReenviarSms', () => {
   let casoDeUso: EvaluarYReenviarSms;
@@ -13,6 +19,11 @@ describe('EvaluarYReenviarSms', () => {
   let repositorioMensajes: jest.Mocked<IRepositorioMensajes>;
   let repositorioConfig: jest.Mocked<IRepositorioConfigTelegram>;
   let enviadorTelegram: jest.Mocked<IEnviadorTelegram>;
+  let repositorioAjustes: jest.Mocked<IRepositorioAjustes>;
+  let repositorioPendientes: jest.Mocked<IRepositorioPendientes>;
+  let monitorDeRed: jest.Mocked<IMonitorDeRed>;
+  let enviadorWebhook: jest.Mocked<IEnviadorWebhook>;
+  let notificador: jest.Mocked<INotificador>;
 
   beforeEach(() => {
     repositorioReglas = {
@@ -24,13 +35,37 @@ describe('EvaluarYReenviarSms', () => {
     repositorioMensajes = {
       guardar: jest.fn(),
       obtenerTodos: jest.fn(),
+      actualizar: jest.fn(),
     };
     repositorioConfig = {
       guardar: jest.fn(),
       obtener: jest.fn(),
+      obtenerTodas: jest.fn(),
+      obtenerPorId: jest.fn(),
+      eliminar: jest.fn(),
     };
     enviadorTelegram = {
       enviarMensaje: jest.fn(),
+    };
+    repositorioAjustes = {
+      guardar: jest.fn(),
+      obtener: jest.fn().mockResolvedValue(AJUSTES_POR_DEFECTO),
+    };
+    repositorioPendientes = {
+      agregar: jest.fn(),
+      obtenerTodos: jest.fn(),
+      eliminar: jest.fn(),
+      actualizar: jest.fn(),
+    };
+    monitorDeRed = {
+      estaConectado: jest.fn().mockResolvedValue(true),
+      alRecuperarConexion: jest.fn().mockReturnValue(() => {}),
+    };
+    enviadorWebhook = {
+      enviar: jest.fn(),
+    };
+    notificador = {
+      notificar: jest.fn(),
     };
 
     casoDeUso = new EvaluarYReenviarSms(
@@ -39,6 +74,11 @@ describe('EvaluarYReenviarSms', () => {
       repositorioConfig,
       enviadorTelegram,
       new EvaluadorDeReglas(),
+      repositorioAjustes,
+      repositorioPendientes,
+      monitorDeRed,
+      enviadorWebhook,
+      notificador,
     );
   });
 
@@ -69,8 +109,11 @@ describe('EvaluarYReenviarSms', () => {
       },
     ]);
     repositorioConfig.obtener.mockResolvedValue({
+      id: '1',
+      nombre: 'Bot',
       botToken: 'token123',
       chatId: 'chat456',
+      esPredeterminada: true,
     });
     enviadorTelegram.enviarMensaje.mockResolvedValue();
 
@@ -98,8 +141,11 @@ describe('EvaluarYReenviarSms', () => {
       },
     ]);
     repositorioConfig.obtener.mockResolvedValue({
+      id: '1',
+      nombre: 'Bot',
       botToken: 'tk',
       chatId: 'ch',
+      esPredeterminada: true,
     });
     enviadorTelegram.enviarMensaje.mockResolvedValue();
 
@@ -165,8 +211,11 @@ describe('EvaluarYReenviarSms', () => {
       },
     ]);
     repositorioConfig.obtener.mockResolvedValue({
+      id: '1',
+      nombre: 'Bot',
       botToken: 'token',
       chatId: 'chat',
+      esPredeterminada: true,
     });
     enviadorTelegram.enviarMensaje.mockRejectedValue(
       new Error('Sin conexion a internet'),
@@ -194,8 +243,11 @@ describe('EvaluarYReenviarSms', () => {
       },
     ]);
     repositorioConfig.obtener.mockResolvedValue({
+      id: '1',
+      nombre: 'Bot',
       botToken: 'token',
       chatId: 'chat',
+      esPredeterminada: true,
     });
     enviadorTelegram.enviarMensaje.mockRejectedValue('fallo desconocido');
 

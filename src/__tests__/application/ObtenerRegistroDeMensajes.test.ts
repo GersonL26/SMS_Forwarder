@@ -21,6 +21,7 @@ describe('ObtenerRegistroDeMensajes', () => {
     repositorioMensajes = {
       guardar: jest.fn(),
       obtenerTodos: jest.fn(),
+      actualizar: jest.fn(),
     };
     casoDeUso = new ObtenerRegistroDeMensajes(repositorioMensajes);
   });

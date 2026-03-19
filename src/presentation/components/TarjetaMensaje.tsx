@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MensajeSms, EstadoMensaje } from '../../domain/entities/MensajeSms';
+import { COLORES, SOMBRAS, BORDES } from '../theme/colores';
 
 const ICONOS_ESTADO: Record<EstadoMensaje, string> = {
   [EstadoMensaje.REENVIADO]: '✅',
@@ -8,16 +9,10 @@ const ICONOS_ESTADO: Record<EstadoMensaje, string> = {
   [EstadoMensaje.ERROR]: '⚠️',
 };
 
-const COLORES_ESTADO: Record<EstadoMensaje, string> = {
-  [EstadoMensaje.REENVIADO]: '#4CAF50',
-  [EstadoMensaje.FILTRADO]: '#78909C',
-  [EstadoMensaje.ERROR]: '#F44336',
-};
-
-const COLORES_FONDO_ESTADO: Record<EstadoMensaje, string> = {
-  [EstadoMensaje.REENVIADO]: '#E8F5E9',
-  [EstadoMensaje.FILTRADO]: '#ECEFF1',
-  [EstadoMensaje.ERROR]: '#FFEBEE',
+const COLORES_ESTADO: Record<EstadoMensaje, { texto: string; fondo: string }> = {
+  [EstadoMensaje.REENVIADO]: { texto: COLORES.exito, fondo: COLORES.exitoFondo },
+  [EstadoMensaje.FILTRADO]: { texto: COLORES.filtrado, fondo: COLORES.filtradoFondo },
+  [EstadoMensaje.ERROR]: { texto: COLORES.error, fondo: COLORES.errorFondo },
 };
 
 const ETIQUETAS_ESTADO: Record<EstadoMensaje, string> = {
@@ -28,28 +23,28 @@ const ETIQUETAS_ESTADO: Record<EstadoMensaje, string> = {
 
 interface Props {
   mensaje: MensajeSms;
+  onReintentar?: (mensaje: MensajeSms) => void;
 }
 
-export const TarjetaMensaje: React.FC<Props> = ({ mensaje }) => {
-  const colorEstado = COLORES_ESTADO[mensaje.estado];
-  const fondoEstado = COLORES_FONDO_ESTADO[mensaje.estado];
+export const TarjetaMensaje: React.FC<Props> = ({ mensaje, onReintentar }) => {
+  const estado = COLORES_ESTADO[mensaje.estado];
 
   return (
-    <View style={[estilos.contenedor, { borderLeftColor: colorEstado }]}>
+    <View style={estilos.contenedor}>
       <View style={estilos.encabezado}>
         <View style={estilos.infoRemitente}>
-          <Text style={estilos.iconoRemitente}>👤</Text>
+          <View style={estilos.avatarRemitente}>
+            <Text style={estilos.iconoRemitente}>👤</Text>
+          </View>
           <Text style={estilos.remitente} numberOfLines={1}>
             {mensaje.remitente}
           </Text>
         </View>
-        <View
-          style={[estilos.insigniaEstado, { backgroundColor: fondoEstado }]}
-        >
+        <View style={[estilos.insigniaEstado, { backgroundColor: estado.fondo }]}>
           <Text style={estilos.iconoEstado}>
             {ICONOS_ESTADO[mensaje.estado]}
           </Text>
-          <Text style={[estilos.textoEstado, { color: colorEstado }]}>
+          <Text style={[estilos.textoEstado, { color: estado.texto }]}>
             {ETIQUETAS_ESTADO[mensaje.estado]}
           </Text>
         </View>
@@ -68,6 +63,15 @@ export const TarjetaMensaje: React.FC<Props> = ({ mensaje }) => {
       {mensaje.motivoError && (
         <View style={estilos.contenedorError}>
           <Text style={estilos.error}>⚠️ {mensaje.motivoError}</Text>
+          {onReintentar && mensaje.estado === EstadoMensaje.ERROR && (
+            <TouchableOpacity
+              style={estilos.botonReintentar}
+              onPress={() => onReintentar(mensaje)}
+              activeOpacity={0.7}
+            >
+              <Text style={estilos.textoReintentar}>🔄 Reintentar</Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
     </View>
@@ -76,23 +80,20 @@ export const TarjetaMensaje: React.FC<Props> = ({ mensaje }) => {
 
 const estilos = StyleSheet.create({
   contenedor: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    padding: 14,
-    marginHorizontal: 12,
-    marginVertical: 5,
-    borderLeftWidth: 4,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 3,
+    backgroundColor: COLORES.tarjeta,
+    borderRadius: BORDES.radio.md,
+    padding: 16,
+    marginHorizontal: 16,
+    marginVertical: 6,
+    borderWidth: 1,
+    borderColor: COLORES.tarjetaBorde,
+    ...SOMBRAS.suave,
   },
   encabezado: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
   },
   infoRemitente: {
     flexDirection: 'row',
@@ -100,36 +101,44 @@ const estilos = StyleSheet.create({
     flex: 1,
     marginRight: 8,
   },
+  avatarRemitente: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(0, 217, 255, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
+  },
   iconoRemitente: {
     fontSize: 14,
-    marginRight: 6,
   },
   remitente: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#1A1A1A',
+    color: COLORES.texto,
     flex: 1,
   },
   insigniaEstado: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 16,
+    paddingVertical: 5,
+    borderRadius: 20,
   },
   iconoEstado: {
     fontSize: 11,
     marginRight: 4,
   },
   textoEstado: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
   },
   cuerpo: {
     fontSize: 14,
-    color: '#555',
+    color: COLORES.textoSecundario,
     lineHeight: 20,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   pieDetarjeta: {
     flexDirection: 'row',
@@ -137,16 +146,29 @@ const estilos = StyleSheet.create({
   },
   fecha: {
     fontSize: 11,
-    color: '#999',
+    color: COLORES.textoSutil,
   },
   contenedorError: {
-    backgroundColor: '#FFF3F3',
-    padding: 8,
-    borderRadius: 6,
-    marginTop: 8,
+    backgroundColor: COLORES.errorFondo,
+    padding: 10,
+    borderRadius: BORDES.radio.sm,
+    marginTop: 10,
   },
   error: {
     fontSize: 12,
-    color: '#D32F2F',
+    color: COLORES.error,
+  },
+  botonReintentar: {
+    marginTop: 8,
+    backgroundColor: COLORES.error,
+    paddingVertical: 7,
+    paddingHorizontal: 14,
+    borderRadius: BORDES.radio.sm,
+    alignSelf: 'flex-start',
+  },
+  textoReintentar: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
   },
 });

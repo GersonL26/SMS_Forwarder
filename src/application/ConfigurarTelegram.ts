@@ -8,20 +8,26 @@ export class ConfigurarTelegram {
     private readonly enviadorTelegram: IEnviadorTelegram,
   ) {}
 
-  async guardarConfiguracion(
-    botToken: string,
-    chatId: string,
-  ): Promise<void> {
-    const configuracion: ConfiguracionTelegram = { botToken, chatId };
-    await this.repositorioConfig.guardar(configuracion);
+  async guardarConfiguracion(config: ConfiguracionTelegram): Promise<void> {
+    await this.repositorioConfig.guardar(config);
   }
 
   async obtenerConfiguracion(): Promise<ConfiguracionTelegram | null> {
     return this.repositorioConfig.obtener();
   }
 
-  async enviarMensajeDePrueba(): Promise<void> {
-    const config = await this.repositorioConfig.obtener();
+  async obtenerTodas(): Promise<ConfiguracionTelegram[]> {
+    return this.repositorioConfig.obtenerTodas();
+  }
+
+  async eliminarConfiguracion(id: string): Promise<void> {
+    await this.repositorioConfig.eliminar(id);
+  }
+
+  async enviarMensajeDePrueba(configId?: string): Promise<void> {
+    const config = configId
+      ? await this.repositorioConfig.obtenerPorId(configId)
+      : await this.repositorioConfig.obtener();
 
     if (!config) {
       throw new Error('No hay configuración de Telegram guardada');

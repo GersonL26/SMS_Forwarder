@@ -32,7 +32,7 @@ export const useMensajes = () => {
   const [cargando, setCargando] = useState(true);
   const [servicioActivo, setServicioActivo] = useState(false);
 
-  const { obtenerRegistroDeMensajes, controlarServicioSms } =
+  const { obtenerRegistroDeMensajes, controlarServicioSms, reintentarMensaje } =
     ContenedorDeDependencias.obtenerInstancia();
 
   const cargarMensajes = useCallback(async () => {
@@ -65,11 +65,23 @@ export const useMensajes = () => {
     }
   }, [servicioActivo, controlarServicioSms]);
 
+  const reintentar = useCallback(
+    async (mensaje: MensajeSms): Promise<boolean> => {
+      const exito = await reintentarMensaje.ejecutar(mensaje);
+      if (exito) {
+        await cargarMensajes();
+      }
+      return exito;
+    },
+    [reintentarMensaje, cargarMensajes],
+  );
+
   return {
     mensajes,
     cargando,
     servicioActivo,
     cargarMensajes,
     alternarServicio,
+    reintentar,
   };
 };

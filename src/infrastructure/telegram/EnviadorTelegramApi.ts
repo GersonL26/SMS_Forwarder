@@ -12,7 +12,7 @@ export class EnviadorTelegramApi implements IEnviadorTelegram {
 
     const respuesta = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       body: JSON.stringify({ chat_id: chatId, text: texto }),
     });
 

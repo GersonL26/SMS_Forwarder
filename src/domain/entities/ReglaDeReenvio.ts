@@ -10,4 +10,8 @@ export interface ReglaDeReenvio {
   readonly patron: string;
   readonly esRegex: boolean;
   readonly activa: boolean;
+  readonly configTelegramId?: string;
+  readonly horarioInicio?: string;
+  readonly horarioFin?: string;
+  readonly diasActivos?: number[];
 }
