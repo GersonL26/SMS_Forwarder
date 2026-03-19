@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { PermissionsAndroid, Platform, Alert } from 'react-native';
 import { MensajeSms } from '../../domain/entities/MensajeSms';
 import { ContenedorDeDependencias } from '../../infrastructure/container/ContenedorDeDependencias';
+import { ReceptorSmsNativo } from '../../infrastructure/sms/ReceptorSmsNativo';
 
 const solicitarPermisosSms = async (): Promise<boolean> => {
   if (Platform.OS !== 'android') return false;
@@ -44,7 +45,20 @@ export const useMensajes = () => {
 
   useEffect(() => {
     cargarMensajes();
-    setServicioActivo(controlarServicioSms.estaActivo());
+    // Check persisted native service state and auto-resume if needed
+    const verificarEstado = async () => {
+      const receptor = controlarServicioSms['receptorSms'] as ReceptorSmsNativo;
+      if (receptor.consultarEstadoNativo) {
+        const corriendo = await receptor.consultarEstadoNativo();
+        if (corriendo && !controlarServicioSms.estaActivo()) {
+          controlarServicioSms.iniciar();
+        }
+        setServicioActivo(corriendo);
+      } else {
+        setServicioActivo(controlarServicioSms.estaActivo());
+      }
+    };
+    verificarEstado();
   }, [cargarMensajes, controlarServicioSms]);
 
   const alternarServicio = useCallback(async () => {

@@ -39,4 +39,8 @@ export class ReceptorSmsNativo implements IReceptorSms {
   estaEscuchando(): boolean {
     return this.escuchando;
   }
+
+  async consultarEstadoNativo(): Promise<boolean> {
+    return SmsListener.isServiceRunning();
+  }
 }
