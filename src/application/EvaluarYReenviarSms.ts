@@ -12,6 +12,11 @@ import { INotificador } from '../domain/ports/INotificador';
 import { EvaluadorDeReglas } from '../domain/services/EvaluadorDeReglas';
 
 export class EvaluarYReenviarSms {
+  // Clave de idempotencia: evita procesar el mismo SMS más de una vez
+  // en una ventana de 10 segundos (p. ej. por entregas duplicadas del SO).
+  private readonly _procesados = new Map<string, number>();
+  private readonly _VENTANA_MS = 10_000;
+
   constructor(
     private readonly repositorioReglas: IRepositorioReglas,
     private readonly repositorioMensajes: IRepositorioMensajes,
@@ -26,6 +31,17 @@ export class EvaluarYReenviarSms {
   ) {}
 
   async ejecutar(remitente: string, cuerpo: string): Promise<void> {
+    const clave = `${remitente}|${cuerpo}`;
+    const ahora = Date.now();
+    const ultimoProcesado = this._procesados.get(clave);
+    if (ultimoProcesado !== undefined && ahora - ultimoProcesado < this._VENTANA_MS) {
+      return; // duplicado dentro de la ventana de idempotencia, descartar
+    }
+    this._procesados.set(clave, ahora);
+    // Limpiar entradas expiradas para no crecer indefinidamente
+    for (const [k, t] of this._procesados) {
+      if (ahora - t >= this._VENTANA_MS) this._procesados.delete(k);
+    }
     const reglas = await this.repositorioReglas.obtenerTodas();
     const reglaCoincidente = this.evaluadorDeReglas.obtenerReglaCoincidente(
       remitente,

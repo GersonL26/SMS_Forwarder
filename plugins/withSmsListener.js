@@ -27,12 +27,16 @@ class SmsReceiver : BroadcastReceiver() {
         val remitente = messages[0].originatingAddress ?: ""
         val cuerpo = messages.joinToString("") { it.messageBody }
 
-        // Notificar al hilo JS para actualizar la UI si la app esta en primer plano
-        SmsListenerModule.instance?.emitSmsReceived(remitente, cuerpo)
-
-        // Siempre delegar al servicio persistente si esta activo
         val prefs = context.getSharedPreferences("sms_forwarder", Context.MODE_PRIVATE)
-        if (prefs.getBoolean("is_listening", false)) {
+        if (!prefs.getBoolean("is_listening", false)) return
+
+        // Idempotencia: un solo camino procesa el SMS.
+        // Si el contexto JS esta activo (app en primer plano), el hilo JS gestiona el
+        // reenvio completo (historial, webhooks, notificaciones, cola de reintentos).
+        // De lo contrario, se delega al servicio nativo como mecanismo de respaldo.
+        if (SmsListenerModule.estaActivo()) {
+            SmsListenerModule.instance?.emitSmsReceived(remitente, cuerpo)
+        } else {
             val smsIntent = Intent(context, SmsForwarderService::class.java).apply {
                 action = SmsForwarderService.ACTION_SMS
                 putExtra("remitente", remitente)
@@ -290,6 +294,10 @@ class SmsListenerModule(private val reactContext: ReactApplicationContext) :
 
     companion object {
         var instance: SmsListenerModule? = null
+
+        /** Devuelve true si el contexto JS esta disponible (app en primer plano). */
+        fun estaActivo(): Boolean =
+            instance?.reactContext?.hasActiveReactInstance() == true
     }
 
     init {
